@@ -9,16 +9,16 @@ package {'ruby1.9.3' :
 }
 
 package {'git' :
-	ensure => 'latest',
+	ensure	=>	'latest',
 	require	=>	Exec['apt-get update'],
 }
 
 package {'make' :
-	ensure => 'latest',
+	ensure	=>	'latest',
 	require	=>	Exec['apt-get update'],
 }
 
 package {'jekyll' :
-	ensure => 'latest',
-	provider => 'gem',
+	ensure	=> 	'latest',
+	provider => 	'gem',
 }
