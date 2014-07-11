@@ -35,7 +35,15 @@ package { 'go-agent' :
 	ensure		=>	'present',
 }
 
-Exec['apt-get update'] -> Package['openjdk'] -> Package['unzip'] -> Exec['get go-server'] -> Exec['get go-agent'] -> Package['go-server'] -> Package['go-agent'] -> Service['go-server'] -> Service['go-agent']
+Exec['apt-get update'] -> 
+	Package['openjdk'] -> 
+	Package['unzip'] -> 
+	Exec['get go-server'] -> 
+	Exec['get go-agent'] -> 
+	Package['go-server'] -> 
+	Package['go-agent'] -> 
+	Service['go-server'] -> 
+	Service['go-agent']
 
 service { 'go-server' :
 	ensure		=>	'running'
