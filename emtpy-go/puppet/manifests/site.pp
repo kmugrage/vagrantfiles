@@ -5,14 +5,11 @@ exec { 'apt-get update':
 package { 'openjdk':
 	name		=>	'openjdk-7-jdk',
 	ensure		=>	present,
-	require		=>	Exec['apt-get update'],
-	require		=>	Package['unzip'],
 }
 
 package { 'unzip':
 	name		=>	'unzip',
 	ensure		=>	present,
-	require		=>	Exec['apt-get update'],
 }
 
 exec { 'get go-server':
@@ -24,8 +21,6 @@ package { 'go-server' :
 	provider	=>	'dpkg',
 	source		=>	'go-server-14.2.0-377.deb',
 	ensure		=>	'present',
-	require		=>	Exec['get go-server'],
-	require		=>	Package['openjdk'],
 }
 
 
@@ -38,7 +33,14 @@ package { 'go-agent' :
 	provider	=>	'dpkg',
 	source		=>	'go-agent-14.2.0-377.deb',
 	ensure		=>	'present',
-	require		=>	Exec['get go-agent'],
-	require		=>	Package['openjdk'],
 }
 
+Exec['apt-get update'] -> Package['openjdk'] -> Package['unzip'] -> Exec['get go-server'] -> Exec['get go-agent'] -> Package['go-server'] -> Package['go-agent']
+
+service { 'go-server' :
+	ensure		=>	'running'
+}
+	
+service { 'go-agent' :
+	ensure		=>	'running'
+}
