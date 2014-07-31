@@ -2,44 +2,52 @@ exec { 'apt-get update':
 	command		=>	'/usr/bin/apt-get update'
 }
 
-package { 'openjdk':
-	name		=>	'openjdk-7-jdk',
+package { 'default-jre-headless':
+	name		=>	'default-jre-headless',
 	ensure		=>	present,
 }
 
 package { 'unzip':
-	name		=>	'unzip',
 	ensure		=>	present,
 }
 
-exec { 'get go-server':
-	command		=>	'/usr/bin/wget -nc http://dl.bintray.com/gocd/gocd-deb/go-server-14.2.0-377.deb'
+package { 'ruby1.9.3':
+	ensure		=>	present,
+}
+
+package { 'make':
+	ensure		=>	present,
 }
 
 package { 'go-server' :
-	name		=>	'go-server',
 	provider	=>	'dpkg',
-	source		=>	'go-server-14.2.0-377.deb',
+	source		=>	'/vagrant/go-server-14.2.0-377.deb',
 	ensure		=>	'present',
-}
-
-
-exec { 'get go-agent':
-	command		=>	'/usr/bin/wget -nc http://dl.bintray.com/gocd/gocd-deb/go-agent-14.2.0-377.deb'
 }
 
 package { 'go-agent' :
-	name		=>	'go-agent',
 	provider	=>	'dpkg',
-	source		=>	'go-agent-14.2.0-377.deb',
+	source		=>	'/vagrant/go-agent-14.2.0-377.deb',
 	ensure		=>	'present',
 }
 
+package { 'rake' :
+	ensure		=>	'present',
+	provider	=>	'gem',
+}
+
+package { 'rails' :
+	ensure		=>	'present',
+	provider	=>	'gem',
+}
+
 Exec['apt-get update'] -> 
-	Package['openjdk'] -> 
+	Package['default-jre-headless'] -> 
 	Package['unzip'] -> 
-	Exec['get go-server'] -> 
-	Exec['get go-agent'] -> 
+	Package['ruby1.9.3'] -> 
+	Package['make'] -> 
+	Package['rails'] -> 
+	Package['rake'] -> 
 	Package['go-server'] -> 
 	Package['go-agent'] -> 
 	Service['go-server'] -> 

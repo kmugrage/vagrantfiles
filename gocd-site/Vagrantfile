@@ -16,4 +16,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder "../shared", "/vagrant_data"
 
+  config.vm.provision "puppet"
+
+  $go_checkout = <<SCRIPT
+
+  set -e
+
+  if [ -d "gocd.github.io" ]; then
+  	echo "Code already here"
+  else
+  	git clone https://github.com/gocd/gocd.github.io.git
+  fi
+SCRIPT
+
+  config.vm.provision "shell", inline: $go_checkout
+
+  config.vm.provision "shell", inline: "chown -R vagrant:vagrant gocd.github.io"
+
 end
