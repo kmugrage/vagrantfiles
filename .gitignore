@@ -2,3 +2,6 @@ shared
 Boxfile
 *.vagrant*
 *.box
+*.rpm
+*.deb
+*~
