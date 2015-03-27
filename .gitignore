@@ -1,7 +1,9 @@
+.DS_Store
 shared
 Boxfile
 *.vagrant*
 *.box
 *.rpm
 *.deb
+*.zip
 *~
