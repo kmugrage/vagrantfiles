@@ -10,27 +10,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise32"
+  config.vm.box = "hashicorp/precise64"
 
   config.vm.network "forwarded_port", guest: 4000, host: 4000
-
-  config.vm.synced_folder "../shared", "/vagrant_data"
-
-  config.vm.provision "puppet"
-
-  $go_checkout = <<SCRIPT
-
-  set -e
-
-  if [ -d "gocd.github.io" ]; then
-  	echo "Code already here"
-  else
-  	git clone https://github.com/gocd/gocd.github.io.git
-  fi
-SCRIPT
-
-  config.vm.provision "shell", inline: $go_checkout
-
-  config.vm.provision "shell", inline: "chown -R vagrant:vagrant gocd.github.io"
 
 end
