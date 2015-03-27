@@ -11,7 +11,7 @@ package { 'unzip':
 	ensure		=>	present,
 }
 
-package { 'ruby1.9.3':
+package { 'patch':
 	ensure		=>	present,
 }
 
@@ -21,13 +21,13 @@ package { 'make':
 
 package { 'go-server' :
 	provider	=>	'dpkg',
-	source		=>	'/vagrant/go-server-14.2.0-377.deb',
+	source		=>	'/vagrant/go-server-14.4.0-1356.deb',
 	ensure		=>	'present',
 }
 
 package { 'go-agent' :
 	provider	=>	'dpkg',
-	source		=>	'/vagrant/go-agent-14.2.0-377.deb',
+	source		=>	'/vagrant/go-agent-14.4.0-1356.deb',
 	ensure		=>	'present',
 }
 
@@ -36,17 +36,11 @@ package { 'rake' :
 	provider	=>	'gem',
 }
 
-package { 'rails' :
-	ensure		=>	'present',
-	provider	=>	'gem',
-}
-
 Exec['apt-get update'] -> 
 	Package['default-jre-headless'] -> 
 	Package['unzip'] -> 
-	Package['ruby1.9.3'] -> 
 	Package['make'] -> 
-	Package['rails'] -> 
+	Package['patch'] -> 
 	Package['rake'] -> 
 	Package['go-server'] -> 
 	Package['go-agent'] -> 
